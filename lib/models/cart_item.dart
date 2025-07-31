@@ -29,10 +29,11 @@ class CartItem {
   Map<String, dynamic> toJson() {
     return {
       'cartItemId': cartItemId,
-      'product': product,
+      'product': product.toJson(),
       'quantity': quantity,
       'discount': discount,
       'productPrice': productPrice,
     };
   }
+
 }
