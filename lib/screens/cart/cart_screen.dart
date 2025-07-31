@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:galerie_ecom_fe/models/cart_item.dart';
 import 'package:galerie_ecom_fe/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
-import '../providers/cart_provider.dart';
-import '../models/cart_item.dart';
+
 
 
 class CartScreen extends StatelessWidget {
@@ -19,7 +18,7 @@ class CartScreen extends StatelessWidget {
       body: cartItems.isEmpty
         ? const Center(child: Text('Your cart is empty'),)
         : ListView.builder(
-          itemCount: cartItems.length
+          itemCount: cartItems.length,
           itemBuilder: (ctx, i) {
             CartItem item = cartItems[i];
             return ListTile(
