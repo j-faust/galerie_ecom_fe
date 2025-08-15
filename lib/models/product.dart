@@ -1,4 +1,3 @@
-
 class Product {
   final String productId;
   final String productName;
@@ -13,11 +12,11 @@ class Product {
     required this.productId,
     required this.productName,
     required this.productImage,
-    required this.productQuantity,
+    this.productQuantity = 0 ,
     required this.productDescription,
-    required this.price,
-    required this.discount, 
-    required this.specialPrice
+    this.price = 0,
+    this.discount = 0, 
+    this.specialPrice = 0
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {

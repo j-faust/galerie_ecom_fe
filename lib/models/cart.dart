@@ -5,7 +5,7 @@ class Cart{
   final String cartId;
   final User user;
   final List<CartItem> cartItems;
-  final double totalPrice;
+  double totalPrice;
 
   Cart({
     required this.cartId,
