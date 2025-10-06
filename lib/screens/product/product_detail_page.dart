@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:galerie_ecom_fe/models/product.dart';
@@ -68,6 +67,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         productPrice: widget.product.price,
       );
       workingCart.cartItems.add(newItem);
+      CartNotifier.cartCount.value = workingCart.cartItems.fold(0, (sum, item) => sum + item.quantity);; 
     }
 
     // Update total price

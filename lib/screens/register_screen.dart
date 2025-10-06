@@ -96,7 +96,7 @@ Widget build(BuildContext context) {
               
               DropdownButtonFormField(
                 decoration: const InputDecoration(labelText: 'Role'),
-                value: _selectedRole,
+                initialValue: _selectedRole,
                 items: _roles.map((role) {
                   return DropdownMenuItem(
                     value: role,
