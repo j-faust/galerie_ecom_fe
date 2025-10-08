@@ -44,6 +44,83 @@ class CartService {
     CartNotifier.cartCount.value = cart.cartItems.fold(0, (sum, item) => sum + item.quantity);
  }
 
+  Future<void> updateItemQuantity(String productID, int newQuantity) async {
+  if (newQuantity < 1) {
+    throw Exception('Quantity must be at least 1');
+  }
+
+  final prefs = await SharedPreferences.getInstance();
+  String? cartJson = prefs.getString(cartPrefsKey);
+
+  if (cartJson == null) {
+    throw Exception('Cart not found');
+  }
+
+  final Map<String, dynamic> decoded = json.decode(cartJson);
+  Cart cart = Cart.fromJson(decoded);
+
+  bool itemFound = false;
+  for (var item in cart.cartItems) {
+    if (item.productId == productID) {
+      item.quantity = newQuantity;
+      itemFound = true;
+      break;
+    }
+  }
+
+  if (!itemFound) {
+    throw Exception('Item not found in cart');
+  }
+
+  // Recalculate total price
+  double total = 0;
+  for (var item in cart.cartItems) {
+    total += item.productPrice * item.quantity;
+  }
+  cart.totalPrice = total;
+
+  // Save updated cart
+  final updatedCartJson = json.encode(cart.toJson());
+  await prefs.setString(cartPrefsKey, updatedCartJson);
+
+  // Update ValueNotifier for UI
+  CartNotifier.cartCount.value = cart.cartItems.fold(0, (sum, item) => sum + item.quantity);
+}
+
+Future<void> removeItemFromCart(String productID) async {
+  final prefs = await SharedPreferences.getInstance();
+  String? cartJson = prefs.getString(cartPrefsKey);
+
+  if (cartJson == null) {
+    throw Exception('Cart not found');
+  }
+
+  final Map<String, dynamic> decoded = json.decode(cartJson);
+  Cart cart = Cart.fromJson(decoded);
+
+  final initialLength = cart.cartItems.length;
+  cart.cartItems.removeWhere((item) => item.productId == productID);
+
+  if (cart.cartItems.length == initialLength) {
+    throw Exception('Item not found in cart');
+  }
+
+  // Recalculate total price
+  double total = 0;
+  for (var item in cart.cartItems) {
+    total += item.productPrice * item.quantity;
+  }
+  cart.totalPrice = total;
+
+  // Save updated cart
+  final updatedCartJson = json.encode(cart.toJson());
+  await prefs.setString(cartPrefsKey, updatedCartJson);
+
+  // Update ValueNotifier for UI
+  CartNotifier.cartCount.value = cart.cartItems.fold(0, (sum, item) => sum + item.quantity);
+}
+
+
   Future<Cart> createInitialCart() async {
   final AuthService authService = AuthService();
 
